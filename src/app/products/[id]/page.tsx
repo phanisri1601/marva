@@ -6,7 +6,7 @@ import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/Button';
 import { Star, ShoppingCart, Heart, Check, ArrowLeft, Plus, Minus } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
-import { useState, use } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { IngredientsSection } from '@/components/home/IngredientsSection';
 import { ProductShowcase } from '@/components/home/ProductShowcase';
@@ -18,7 +18,7 @@ import { CartModal } from '@/components/ui/CartModal';
 
 const productData = {
   1: {
-    id: 1,
+    id: "1",
     name: 'Peanut Butter',
     price: '$12.99',
     rating: 4.7,
@@ -39,7 +39,7 @@ const productData = {
     }
   },
   2: {
-    id: 2,
+    id: "2",
     name: 'Protein Bar - Normal',
     price: '$24.99',
     rating: 4.8,
@@ -60,7 +60,7 @@ const productData = {
     }
   },
   3: {
-    id: 3,
+    id: "3",
     name: 'Biscuits',
     price: '$8.99',
     rating: 4.6,
@@ -81,7 +81,7 @@ const productData = {
     }
   },
   4: {
-    id: 4,
+    id: "4",
     name: 'Protein Bar - Chocolate',
     price: '$26.99',
     rating: 4.9,
@@ -102,7 +102,7 @@ const productData = {
     }
   },
   5: {
-    id: 5,
+    id: "5",
     name: 'Protein Bar - Peanut Crunch',
     price: '$27.99',
     rating: 4.8,
@@ -123,7 +123,7 @@ const productData = {
     }
   },
   6: {
-    id: 6,
+    id: "6",
     name: 'Protein Bar - Katora',
     price: '$25.99',
     rating: 4.7,
@@ -145,15 +145,17 @@ const productData = {
   }
 };
 
-export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default function ProductDetailPage({ params }: { params: { id: string } }) 
+{
+
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(false);
   
-  // Unwrap the params promise
-  const resolvedParams = use(params);
-  const product = productData[parseInt(resolvedParams.id) as keyof typeof productData];
-  
+  const product : any = productData[
+  parseInt(params.id) as keyof typeof productData
+];
+    
   if (!product) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -371,7 +373,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                   <div className="mb-8">
                     <h3 className="text-lg font-semibold text-gray-900 mb-4">Key Features</h3>
                     <div className="flex flex-wrap gap-2">
-                      {product.features.map((feature, idx) => (
+                      {product.features.map((feature: any, idx: any) => (
                         <span
                           key={idx}
                           className="px-3 py-2 bg-emerald-50 text-emerald-700 text-sm rounded-full flex items-center"
