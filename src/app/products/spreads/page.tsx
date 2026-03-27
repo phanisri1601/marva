@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/Button';
 import { Star, ShoppingCart, Heart, Check } from 'lucide-react';
 import { CartProvider } from '@/contexts/CartContext';
 import { AuthProvider } from '@/contexts/AuthContext';
-import { useCart } from '@/contexts/CartContext';
 
 const spreads = [
   {

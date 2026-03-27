@@ -8,7 +8,7 @@ interface ButtonProps {
   size?: 'sm' | 'md' | 'lg';
   children: React.ReactNode;
   className?: string;
-  onClick?: (e: React.MouseEvent) => void;
+  onClick?: () => void;
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
 }

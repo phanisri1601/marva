@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/Button';
 import { Star, ShoppingCart, Heart, Check } from 'lucide-react';
 import { CartProvider } from '@/contexts/CartContext';
 import { AuthProvider } from '@/contexts/AuthContext';
-import { useCart } from '@/contexts/CartContext';
 
 const biscuits = [
   {
@@ -64,24 +63,10 @@ export default function BiscuitsPage() {
   return (
     <AuthProvider>
       <CartProvider>
-        <BiscuitsPageContent />
-      </CartProvider>
-    </AuthProvider>
-  );
-}
-
-function BiscuitsPageContent() {
-  const { addToCart } = useCart();
-
-  const handleAddToCart = (productId: number, productName: string, productPrice: number) => {
-    addToCart(productId, productName, `$${productPrice.toFixed(2)}`);
-  };
-
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <Navigation />
-      
-      <section className="pt-32 pb-20 bg-gradient-to-br from-amber-50 to-orange-50">
+        <div className="min-h-screen bg-gray-50">
+          <Navigation />
+          
+          <section className="pt-32 pb-20 bg-gradient-to-br from-amber-50 to-orange-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                   <motion.div
                     initial={{ opacity: 0, y: 30 }}
@@ -212,7 +197,7 @@ function BiscuitsPageContent() {
                             >
                               <Heart className="w-5 h-5 text-amber-600" />
                             </motion.button>
-                            <Button variant="primary" size="sm" onClick={() => handleAddToCart(product.id, product.name, product.price)}>
+                            <Button variant="primary" size="sm">
                               Add to Cart
                             </Button>
                           </div>
@@ -227,5 +212,7 @@ function BiscuitsPageContent() {
 
           <Footer />
         </div>
+      </CartProvider>
+    </AuthProvider>
   );
 }

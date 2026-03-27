@@ -6,14 +6,12 @@ import { Menu, X, ShoppingCart, User, LogOut } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { ProfileModal } from '@/components/ui/ProfileModal';
-import { useRouter } from 'next/navigation';
 
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { totalItems, setIsCartOpen } = useCart();
   const { isAuthenticated, user, logout } = useAuth();
-  const router = useRouter();
 
   const handleLogout = () => {
     logout();
@@ -28,47 +26,29 @@ export function Navigation() {
       className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm"
     >
       <div className="w-full max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-14 sm:h-16 md:h-18 lg:h-20">
+        <div className="flex items-center justify-between h-16 sm:h-18 md:h-20 lg:h-24">
           {/* Logo */}
           <motion.div
             whileHover={{ scale: 1.05 }}
             className="flex items-center space-x-2 cursor-pointer"
-            onClick={() => router.push('/')}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
             <img
               src="/logo.png"
               alt="MARVA Logo"
-              className="h-10 w-auto sm:h-12 md:h-14 lg:h-16"
+              className="h-12 w-auto sm:h-14 md:h-16 lg:h-20"
             />
           </motion.div>
 
           {/* Desktop Menu - Hidden on mobile */}
           <div className="hidden md:flex items-center space-x-4 lg:space-x-6 xl:space-x-8">
-            {['Home', 'About Us', 'Products', 'Reviews', 'Blogs'].map((item) => (
+            {['About Us', 'Products', 'Reviews', 'Blogs'].map((item) => (
               <motion.button
                 key={item}
                 onClick={() => {
-                  if (item === 'Home') {
-                    router.push('/');
-                    return;
-                  }
-                  const sectionId = item.toLowerCase().replace(' ', '-');
-                  // Check if we're on a product detail page
-                  if (window.location.pathname.startsWith('/products/')) {
-                    // Scroll to section on current page
-                    const element = document.getElementById(sectionId);
-                    if (element) {
-                      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                  } else if (window.location.pathname === '/') {
-                    // On homepage, scroll to section
-                    const element = document.getElementById(sectionId);
-                    if (element) {
-                      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                  } else {
-                    // On other pages, navigate to homepage with hash
-                    router.push(`/#${sectionId}`);
+                  const element = document.getElementById(item.toLowerCase().replace(' ', '-'));
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
                   }
                 }}
                 className="text-gray-600 hover:text-black transition-colors duration-200 font-medium text-sm sm:text-base lg:text-lg bg-transparent border-none cursor-pointer"
@@ -185,32 +165,13 @@ export function Navigation() {
           >
             <div className="px-4 py-4 space-y-3">
               {/* Mobile Navigation Links */}
-              {['Home', 'About Us', 'Products', 'Reviews', 'Blogs'].map((item) => (
+              {['About Us', 'Products', 'Reviews', 'Blogs'].map((item) => (
                 <motion.button
                   key={item}
                   onClick={() => {
-                    if (item === 'Home') {
-                      router.push('/');
-                      setIsMenuOpen(false);
-                      return;
-                    }
-                    const sectionId = item.toLowerCase().replace(' ', '-');
-                    // Check if we're on a product detail page
-                    if (window.location.pathname.startsWith('/products/')) {
-                      // Scroll to section on current page
-                      const element = document.getElementById(sectionId);
-                      if (element) {
-                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                      }
-                    } else if (window.location.pathname === '/') {
-                      // On homepage, scroll to section
-                      const element = document.getElementById(sectionId);
-                      if (element) {
-                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                      }
-                    } else {
-                      // On other pages, navigate to homepage with hash
-                      router.push(`/#${sectionId}`);
+                    const element = document.getElementById(item.toLowerCase().replace(' ', '-'));
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }
                     setIsMenuOpen(false);
                   }}

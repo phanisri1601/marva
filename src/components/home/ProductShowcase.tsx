@@ -4,19 +4,17 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
 import { ShoppingCart, Plus, Minus } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
-import { useRouter } from 'next/navigation';
 
 export function ProductShowcase() {
-  const { cartItems, updateQuantity, addToCart } = useCart();
-  const router = useRouter();
+  const { addToCart, updateQuantity, removeFromCart, cartItems } = useCart();
 
   const products = [
     {
       id: 1,
       name: 'Peanut Butter',
       price: '$12.99',
-      image: '/bg_marvaproteinbar.png',
-      hoverImage: '/proteinbar1.png',
+      image: '/peanutbutterdrops.png',
+      hoverImage: '/peanut_bowl.png',
     },
     {
       id: 2,
@@ -61,11 +59,12 @@ export function ProductShowcase() {
   };
 
   const handleAddToCart = (productId: number, productName: string, productPrice: string) => {
-    addToCart(productId, productName, productPrice);
-  };
-
-  const handleProductClick = (productId: number) => {
-    router.push(`/products/${productId}`);
+    const currentQuantity = getProductQuantity(productId);
+    if (currentQuantity === 0) {
+      addToCart(productId, productName, productPrice);
+    } else {
+      updateQuantity(productId, currentQuantity + 1);
+    }
   };
 
   return (
@@ -96,8 +95,7 @@ export function ProductShowcase() {
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-white rounded-2xl overflow-hidden group relative cursor-pointer"
-                onClick={() => handleProductClick(product.id)}
+                className="bg-white rounded-2xl overflow-hidden group relative"
               >
                 {/* Product Image with Hover Effect */}
                 <div className="relative h-64 flex items-center justify-center p-4">
@@ -131,10 +129,7 @@ export function ProductShowcase() {
                   {quantity > 0 ? (
                     <div className="flex items-center justify-center space-x-3 mb-4">
                       <button
-                        onClick={(e: React.MouseEvent) => {
-                          e.stopPropagation();
-                          updateQuantity(product.id, quantity - 1);
-                        }}
+                        onClick={() => updateQuantity(product.id, quantity - 1)}
                         className="p-2 bg-emerald-100 rounded-lg hover:bg-emerald-200 transition-colors duration-200"
                         disabled={quantity <= 1}
                       >
@@ -144,10 +139,7 @@ export function ProductShowcase() {
                         {quantity}
                       </span>
                       <button
-                        onClick={(e: React.MouseEvent) => {
-                          e.stopPropagation();
-                          updateQuantity(product.id, quantity + 1);
-                        }}
+                        onClick={() => updateQuantity(product.id, quantity + 1)}
                         className="p-2 bg-emerald-100 rounded-lg hover:bg-emerald-200 transition-colors duration-200"
                       >
                         <Plus className="w-4 h-4 text-emerald-600" />
@@ -158,10 +150,7 @@ export function ProductShowcase() {
                       variant="primary" 
                       size="sm"
                       className="w-full"
-                      onClick={(e: React.MouseEvent) => {
-                        e.stopPropagation();
-                        handleAddToCart(product.id, product.name, product.price);
-                      }}
+                      onClick={() => handleAddToCart(product.id, product.name, product.price)}
                     >
                       Buy Now
                     </Button>
