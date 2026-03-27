@@ -16,6 +16,8 @@ import { GetEveryAnswer } from '@/components/home/GetEveryAnswer';
 import { FeaturesSection } from '@/components/home/FeaturesSection';
 import { CartModal } from '@/components/ui/CartModal';
 
+import { use } from 'react';
+
 const productData = {
   1: {
     id: "1",
@@ -145,16 +147,14 @@ const productData = {
   }
 };
 
-export default function ProductDetailPage({ params }: { params: { id: string } }) 
+export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) 
 {
-
+  const resolvedParams = use(params);
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(false);
   
-  const product : any = productData[
-  parseInt(params.id) as keyof typeof productData
-];
+  const product = productData[parseInt(resolvedParams.id) as keyof typeof productData];
     
   if (!product) {
     return (
@@ -173,10 +173,10 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
 
   const handleAddToCart = () => {
     // First add to cart with default quantity of 1
-    addToCart(product.id, product.name, product.price);
+    addToCart(parseInt(product.id), product.name, product.price);
     // Then update to the selected quantity if more than 1
     if (quantity > 1) {
-      updateCartQuantity(product.id, quantity);
+      updateCartQuantity(parseInt(product.id), quantity);
     }
   };
 
